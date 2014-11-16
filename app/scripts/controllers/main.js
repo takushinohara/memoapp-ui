@@ -10,8 +10,8 @@
 angular.module('memoappUiApp')
   .controller('MainCtrl', ['$scope', 'MemoAppApi', function ($scope, MemoAppApi) {
   	// 入力最大文字数定義
-  	var maxTitleCount = 20;
-  	var maxContentCount = 140;
+    var maxTitleCount = 20;
+    var maxContentCount = 140;
 
     // 一覧取得
     $scope.memos = MemoAppApi.query(function() {
@@ -41,24 +41,24 @@ angular.module('memoappUiApp')
 
     // 更新
     $scope.put = function () {
-        MemoAppApi.update({}, $scope.mainMemo, function() {
-        	$scope.memos = MemoAppApi.query();
-      		initCount();
-        });
+      MemoAppApi.update({}, $scope.mainMemo, function() {
+        $scope.memos = MemoAppApi.query();
+      	initCount();
+      });
     };
 
     // 削除
     $scope.remove = function (memoId) {
-        MemoAppApi.delete({}, {id:memoId}, function () {
-            $scope.memos.splice($scope.selectedIdx, 1);
-            $scope.mainMemo = null;
-            $scope.selectedIdx = null;
-        });
+      MemoAppApi.delete({}, {id:memoId}, function () {
+        $scope.memos.splice($scope.selectedIdx, 1);
+        $scope.mainMemo = null;
+        $scope.selectedIdx = null;
+      });
     };
 
     // タイトルの文字数カウント
     $scope.changeTitle = function () {
-      	$scope.titleCount = maxTitleCount - $scope.mainMemo.title.length;
+      $scope.titleCount = maxTitleCount - $scope.mainMemo.title.length;
     	if ($scope.titleCount < 0) {
     		$scope.isOverTitle = true;
     	} else if ($scope.titleCount === maxTitleCount) {
@@ -71,7 +71,7 @@ angular.module('memoappUiApp')
 
     // 本文の文字数カウント
     $scope.changeContent = function () {
-      	$scope.contentCount = maxContentCount - $scope.mainMemo.content.length;
+      $scope.contentCount = maxContentCount - $scope.mainMemo.content.length;
     	if ($scope.contentCount < 0) {
     		$scope.isOverContent = true;
     	} else {
@@ -97,6 +97,6 @@ angular.module('memoappUiApp')
       $scope.isOverTitle = false;
 	  $scope.isOverContent = false;
     }
-    
+
   }]);
 
