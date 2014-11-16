@@ -9,7 +9,7 @@
  */
 angular.module('memoappUiApp')
   .controller('MainCtrl', ['$scope', 'MemoAppApi', function ($scope, MemoAppApi) {
-  	// 入力最大文字数定義
+    // 入力最大文字数定義
     var maxTitleCount = 20;
     var maxContentCount = 140;
 
