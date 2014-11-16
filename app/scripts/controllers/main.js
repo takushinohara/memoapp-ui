@@ -43,7 +43,7 @@ angular.module('memoappUiApp')
     $scope.put = function () {
       MemoAppApi.update({}, $scope.mainMemo, function() {
         $scope.memos = MemoAppApi.query();
-      	initCount();
+        initCount();
       });
     };
 
@@ -59,30 +59,30 @@ angular.module('memoappUiApp')
     // タイトルの文字数カウント
     $scope.changeTitle = function () {
       $scope.titleCount = maxTitleCount - $scope.mainMemo.title.length;
-    	if ($scope.titleCount < 0) {
-    		$scope.isOverTitle = true;
-    	} else if ($scope.titleCount === maxTitleCount) {
-    		$scope.isNoTitle = true;
-    	} else {
-     		$scope.isNoTitle = false;
-    		$scope.isOverTitle = false;
-    	}
+      if ($scope.titleCount < 0) {
+        $scope.isOverTitle = true;
+      } else if ($scope.titleCount === maxTitleCount) {
+        $scope.isNoTitle = true;
+      } else {
+        $scope.isNoTitle = false;
+        $scope.isOverTitle = false;
+      }
     };
 
     // 本文の文字数カウント
     $scope.changeContent = function () {
       $scope.contentCount = maxContentCount - $scope.mainMemo.content.length;
-    	if ($scope.contentCount < 0) {
-    		$scope.isOverContent = true;
-    	} else {
-    		$scope.isOverContent = false;
-    	}
+      if ($scope.contentCount < 0) {
+        $scope.isOverContent = true;
+      } else {
+        $scope.isOverContent = false;
+      }
     };
 
     // 検索実行時に詳細表示をリセット
     $scope.changeSearch = function () {
-    	$scope.selectedIdx = null;
-    	$scope.mainMemo = null; 
+      $scope.selectedIdx = null;
+      $scope.mainMemo = null; 
     };
 
     $scope.isActive = function (index) { 
@@ -91,12 +91,11 @@ angular.module('memoappUiApp')
 
     // 入力文字数の設定初期化
     function initCount() {
-   	  $scope.titleCount = null;
+      $scope.titleCount = null;
       $scope.contentCount = null;
       $scope.isNoTitle = false;
       $scope.isOverTitle = false;
-	  $scope.isOverContent = false;
+      $scope.isOverContent = false;
     }
 
   }]);
-
