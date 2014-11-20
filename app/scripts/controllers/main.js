@@ -16,43 +16,62 @@ angular.module('memoappUiApp')
     // 一覧取得
     $scope.memos = MemoAppApi.query(function() {
       $scope.selectedIdx = null; 
-      console.log('success select query');
-    }, function(){
-      console.log('error select query');
+      $scope.status = 'success';
+    }, function() {
+      $scope.status = 'error';
     });
 
     // 詳細取得
     $scope.getDetail = function (memoId, index) {
       $scope.selectedIdx = index; 
-      var memoDetail = MemoAppApi.get({id:memoId});
-      $scope.mainMemo = memoDetail;
-      initCount();
+      $scope.mainMemo = MemoAppApi.get({id:memoId}, function() {
+        $scope.status = 'success';
+        initCount();
+      }, function() {
+        $scope.status = 'error';
+        $scope.mainMemo = null;
+      });
     };
 
     // 登録
     $scope.add = function () {
       var obj = {title:'新規メモ',content:''};
-      MemoAppApi.save({}, obj, function () {
-        $scope.memos = MemoAppApi.query();
+      MemoAppApi.save(obj, function () {
+        $scope.status = 'success';
         $scope.mainMemo = null;
         $scope.selectedIdx = null;
+        $scope.memos = MemoAppApi.query(function() {
+          }, function(){
+            $scope.status = 'error';
+        });
+      }, function() {
+        $scope.status = 'error';
       });
     };
 
     // 更新
     $scope.put = function () {
-      MemoAppApi.update({}, $scope.mainMemo, function() {
-        $scope.memos = MemoAppApi.query();
+      MemoAppApi.update($scope.mainMemo, function() {
+        $scope.status = 'success';
         initCount();
+        $scope.memos = MemoAppApi.query(function() {
+          }, function(){
+            $scope.status = 'error';
+        });
+      }, function() {
+        $scope.status = 'error';
       });
     };
 
     // 削除
     $scope.remove = function (memoId) {
-      MemoAppApi.delete({}, {id:memoId}, function () {
+      MemoAppApi.delete({id:memoId}, function () {
+        $scope.status = 'success';
         $scope.memos.splice($scope.selectedIdx, 1);
         $scope.mainMemo = null;
         $scope.selectedIdx = null;
+      }, function() {
+        $scope.status = 'error';
       });
     };
 
@@ -85,6 +104,7 @@ angular.module('memoappUiApp')
       $scope.mainMemo = null; 
     };
 
+    // タイトル一覧のactive制御
     $scope.isActive = function (index) { 
       return $scope.selectedIdx === index;
     };
@@ -97,5 +117,15 @@ angular.module('memoappUiApp')
       $scope.isOverTitle = false;
       $scope.isOverContent = false;
     }
+
+    // エラー状態の確認
+    $scope.isError = function () {
+      return $scope.status === 'error';
+    };
+
+    // エラーメッセージを閉じる
+    $scope.closeAlert = function() {
+      $scope.status = '';
+    };
 
   }]);

@@ -31,6 +31,7 @@ describe('MainCtrlのテスト', function () {
     expect(scope.memos.length).toEqual(0);
     httpBackend.flush();
     expect(scope.memos.length).toEqual(3);
+    expect(scope.status).toBe('success');
   });
 
   it('メモ詳細が取得できる', function () {
@@ -45,6 +46,7 @@ describe('MainCtrlのテスト', function () {
 
     scope.getDetail(1,0);
     httpBackend.flush();
+    expect(scope.status).toBe('success');
     expect(scope.mainMemo.title).toEqual('タイトル１');
     expect(scope.mainMemo.content).toEqual('本文１');
   });
@@ -59,10 +61,9 @@ describe('MainCtrlのテスト', function () {
     ]);
 
     scope.add();
-    //expect(scope.memos).toEqual([]);
     expect(scope.memos.length).toEqual(0);
     httpBackend.flush();
-    //expect(scope.memos).toEqual([{title:'新規メモ',content:''}]);
+    expect(scope.status).toBe('success');
     expect(scope.memos.length).toEqual(1);
   });
 
@@ -77,9 +78,9 @@ describe('MainCtrlのテスト', function () {
 
     expect(scope.memos.length).toEqual(0);
     scope.selectedIdx = 0;
-    // id: 1 のメモを削除
     scope.remove(1);
     httpBackend.flush();
+    expect(scope.status).toBe('success');
     expect(scope.memos.length).toEqual(2);
   });
 
@@ -102,7 +103,61 @@ describe('MainCtrlのテスト', function () {
     scope.mainMemo = {id: 1, title:'タイトル１更新', content:'本文１更新' };
     scope.put();
     httpBackend.flush();
+    expect(scope.status).toBe('success');
     expect(scope.memos.length).toEqual(3);
+  });
+
+  it('メモ一覧の取得に失敗する', function () {
+    httpBackend.expect('GET', 'http://localhost:8080/api/memoapp').respond(500,'');
+    httpBackend.flush();
+    expect(scope.status).toBe('error');
+  });
+
+  it('メモ詳細の取得に失敗する', function () {
+    httpBackend.expect('GET', 'http://localhost:8080/api/memoapp').respond([
+      {id: 1, title:'タイトル１', content:'本文１' }
+    ]);
+    httpBackend.expect('GET', 'http://localhost:8080/api/memoapp/1').respond(500,'');
+
+    scope.getDetail(1,0);
+    httpBackend.flush();
+    expect(scope.status).toBe('error');
+  });
+
+  it('メモ追加に失敗する', function () {
+    httpBackend.expect('GET', 'http://localhost:8080/api/memoapp').respond([]);
+    httpBackend.expect('POST', 'http://localhost:8080/api/memoapp',
+      {title:'新規メモ',content:''}
+    ).respond(500,'');
+
+    scope.add();
+    httpBackend.flush();
+    expect(scope.status).toBe('error');
+  });
+
+  it('メモ削除に失敗する', function () {
+    httpBackend.expect('GET', 'http://localhost:8080/api/memoapp').respond([
+      {id: 1, title:'タイトル１', content:'本文１' }
+    ]);
+    httpBackend.expect('DELETE', 'http://localhost:8080/api/memoapp/1').respond(500,'');
+
+    scope.remove(1);
+    httpBackend.flush();
+    expect(scope.status).toBe('error');
+  });
+
+  it('メモ更新に失敗する', function () {
+    httpBackend.expect('GET', 'http://localhost:8080/api/memoapp').respond([
+      {id: 1, title:'タイトル１', content:'本文１' }
+    ]);
+    httpBackend.expect('PUT', 'http://localhost:8080/api/memoapp/1').respond([
+      {id: 1, title:'タイトル１更新', content:'本文１更新' }
+    ]).respond(500,'');
+
+    scope.mainMemo = {id: 1, title:'タイトル１更新', content:'本文１更新' };
+    scope.put();
+    httpBackend.flush();
+    expect(scope.status).toBe('error');
   });
 
   afterEach(function () {
