@@ -5,7 +5,7 @@ AngularJSを利用したメモアプリです。REST API（[MemoApp-API](https:/
 
 ## Usage
 ```
-$ git clone https://github.com/t-shinohara/memoapp-ui.git
+$ git clone https://github.com/takushinohara/memoapp-ui.git
 $ cd memoapp-ui
 $ npm install
 $ bower install
