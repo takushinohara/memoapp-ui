@@ -1,7 +1,7 @@
 MemoApp-UI
 ==========
 
-AngularJSを利用したメモアプリです。REST API（[MemoApp-API](https://github.com/t-shinohara/memoapp-api)）とセットで動作します。
+AngularJSを利用したメモアプリです。REST API（[MemoApp-API](https://github.com/takushinohara/memoapp-api)）とセットで動作します。
 
 ## Usage
 ```
