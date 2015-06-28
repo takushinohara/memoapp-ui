@@ -3,6 +3,11 @@ MemoApp-UI
 
 AngularJSを利用したメモアプリです。REST API（[MemoApp-API](https://github.com/takushinohara/memoapp-api)）とセットで動作します。
 
+＜前提条件＞  
+・Node.jsをインストール済み  
+・grunt-cliをインストール済み（ $ npm install -g grunt-cli ）  
+・Compassをインストール済み（ $ gem install compass ）  
+
 ## Usage
 ```
 $ git clone https://github.com/takushinohara/memoapp-ui.git
